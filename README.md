@@ -1,4 +1,4 @@
 ChartVizPortlet
 ===============
 
-Currency visualization application as liferay portlet
+Currency rate visualization application as liferay portlet
