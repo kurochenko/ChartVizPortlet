@@ -24,7 +24,7 @@ public class ChartVizPortlet {
 
     @RenderMapping(params = TIME_RANGE_PARAM)
     public String renderTimeRange(RenderRequest request, RenderResponse response, Model model) {
-        model.addAttribute("plot", request.getParameter(TIME_RANGE_PARAM));
+        model.addAttribute("plot", request.getParameter(TIME_RANGE_PARAM) + " " + TimeRange.valueOf(request.getParameter(TIME_RANGE_PARAM)).getFrom());
         return "chartviz/index";
     }
 }
