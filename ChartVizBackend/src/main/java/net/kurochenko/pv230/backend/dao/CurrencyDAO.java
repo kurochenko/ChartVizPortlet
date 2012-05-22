@@ -10,6 +10,6 @@ import java.util.List;
 public interface CurrencyDAO {
     void create(Currency currency);
     Currency find(Long id);
-    Object find(String name);
+    Currency findByName(String name);
     List<Currency> findAll();
 }

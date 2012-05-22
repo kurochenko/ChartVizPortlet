@@ -37,7 +37,7 @@ public class JpaCurrencyDAO implements CurrencyDAO {
     }
 
     @Override
-    public Currency find(String name) {
+    public Currency findByName(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name is null");
         }
