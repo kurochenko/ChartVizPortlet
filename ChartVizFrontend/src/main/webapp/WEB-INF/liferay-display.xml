@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<display>
+    <category name="Currency rate">
+        <portlet id="ChartViz" />
+    </category>
+</display>
