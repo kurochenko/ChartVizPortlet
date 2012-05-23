@@ -75,6 +75,4 @@ public class CurrencyDAOTest extends AbstractTest {
         assertTrue(currencyDAO.findAll().contains(currency));
         assertTrue(currencyDAO.findAll().contains(currency2));
     }
-
-
 }
