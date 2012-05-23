@@ -21,3 +21,5 @@
 <c:if test="${!empty plot}">
     ${plot}
 </c:if>
+
+Size: ${listSize}

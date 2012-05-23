@@ -1,6 +1,5 @@
 package net.kurochenko.pv230.backend.parser;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -21,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static net.kurochenko.pv230.backend.parser.EcbNamespaceContext.NS_ECB;
 import static net.kurochenko.pv230.backend.parser.EcbNamespaceContext.NS_GMS;
@@ -31,7 +32,9 @@ import static net.kurochenko.pv230.backend.parser.EcbNamespaceContext.NS_GMS;
 @Component
 public class EcbExchangeRateParser implements ExchangeRateParser{
 
-    public static Logger logger = Logger.getLogger(EcbExchangeRateParser.class);
+//    public static Logger logger = Logger.getLogger(EcbExchangeRateParser.class);
+    public static Logger logger = Logger.getLogger(EcbExchangeRateParser.class.getName());
+
 
     /** Node attribute name which contains currency rate validity date */
     public static final String XML_TIME_ATTR_NAME = "time";
@@ -58,7 +61,8 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
         try {
             return rawParse(RATES_XML_DAILY);
         } catch (XPathExpressionException e) {
-            logger.error("Failed to evaluate XPath expression.", e);
+//            logger.error("Failed to evaluate XPath expression.", e);
+            logger.log(Level.SEVERE, "Failed to evaluate XPath expression.", e);
         }
         return null;
     }
@@ -68,7 +72,8 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
         try {
             return rawParse(RATES_XML_ALL);
         } catch (XPathExpressionException e) {
-            logger.error("Failed to evaluate XPath expression.", e);
+//            logger.error("Failed to evaluate XPath expression.", e);
+            logger.log(Level.SEVERE, "Failed to evaluate XPath expression.", e);
         }
         return null;
     }
@@ -117,7 +122,8 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {
-            logger.error("Failed to parse currency rate validity date", e);
+//            logger.error("Failed to parse currency rate validity date", e);
+            logger.log(Level.SEVERE, "Failed to parse currency rate validity date.", e);
         }
 
         return null;
@@ -143,19 +149,24 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
             DocumentBuilder builder = domFactory.newDocumentBuilder();
             document = builder.parse(inputStream);
         } catch (MalformedURLException e) {
-            logger.error("Failed to retrieve XML file with currency rates.", e);
+//            logger.error("Failed to retrieve XML file with currency rates.", e);
+            logger.log(Level.SEVERE, "Failed to retrieve XML file with currency rates.", e);
         } catch (IOException e) {
-            logger.error("Failed to open XML file with currency rates.", e);
+//            logger.error("Failed to open XML file with currency rates.", e);
+            logger.log(Level.SEVERE, "Failed to open XML file with currency rates.", e);
         } catch (SAXException e) {
-            logger.error("Failed to parse XML file with currency rates.", e);
+//            logger.error("Failed to parse XML file with currency rates.", e);
+            logger.log(Level.SEVERE, "Failed to parse XML file with currency rates.", e);
         } catch (ParserConfigurationException e) {
-            logger.error("Failed to configure currency rates XML file parser.", e);
+//            logger.error("Failed to configure currency rates XML file parser.", e);
+            logger.log(Level.SEVERE, "Failed to configure currency rates XML file parser.", e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    logger.error("Failed to close input stream fo currency rates XML file", e);
+//                    logger.error("Failed to close input stream fo currency rates XML file", e);
+                    logger.log(Level.SEVERE, "Failed to close input stream fo currency rates XML file.", e);
                 }
             }
         }

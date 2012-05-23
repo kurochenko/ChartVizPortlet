@@ -4,8 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <!--<import resource="classpath*:META-INF/liferay-data-source.xml"/>-->
-    <!--<import resource="classpath*:META-INF/spring-backend.xml"/>-->
+    <import resource="classpath*:META-INF/liferay-data-source.xml"/>
+    <import resource="classpath*:META-INF/spring-backend.xml"/>
 
     <!-- Spring MVC VIEW Configuration -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -1,7 +1,6 @@
 package net.kurochenko.pv230.backend.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -15,10 +14,8 @@ public class CurrencyValue {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     private BigDecimal value;
 
-    @NotNull
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date time;
 
