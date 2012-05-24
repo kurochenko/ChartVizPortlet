@@ -3,10 +3,7 @@
 <f:setBundle basename="content.chartviz"/>
 
 <%@page import="static net.kurochenko.pv230.portlet.ChartVizPortletConstants.*" %>
-<%@page import="static net.kurochenko.pv230.portlet.TimeRange.*" %>
 <%@ page import="net.kurochenko.pv230.portlet.TimeRange" %>
-
-<spring:message code="index.h1"/> :-)
 
 <c:set var="timeRanges" value="<%=TimeRange.values()%>" />
 <ul>
@@ -18,11 +15,6 @@
     </c:forEach>
 </ul>
 
-<c:if test="${!empty plot}">
-    ${plot}
-</c:if>
-
-Size: ${listSize}
-
-<portlet:resourceURL var="eurPlot" escapeXml="false" id="eurPlot" />
-<img src="${eurPlot}" alt="myImage" />
+<portlet:resourceURL var="plot" escapeXml="false" id="<%=PLOT_RESOURCE_VAL%>" />
+<%-- TODO change arguments --%>
+<img src="${plot}" alt="<spring:message code="img.plot.alt" arguments="XXX"/>" />

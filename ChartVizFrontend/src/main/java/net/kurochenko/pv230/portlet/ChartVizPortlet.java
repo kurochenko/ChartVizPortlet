@@ -8,20 +8,17 @@ import org.jfree.chart.entity.StandardEntityCollection;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.PLOT_RESOURCE_VAL;
 import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.TIME_RANGE_PARAM;
 
 /**
@@ -35,6 +32,7 @@ public class ChartVizPortlet {
     public static final int CHART_HEIGHT = 500;
 
 
+
     @Autowired
     private CurrencyService currencyService;
 
@@ -44,21 +42,11 @@ public class ChartVizPortlet {
     }
 
     @RenderMapping(params = TIME_RANGE_PARAM)
-    public String renderTimeRange(RenderRequest request, RenderResponse response, Model model) {
-        model.addAttribute("plot", request.getParameter(TIME_RANGE_PARAM) + " " + TimeRange.valueOf(request.getParameter(TIME_RANGE_PARAM)).getFrom());
+    public String renderTimeRange() {
         return "chartviz/index";
     }
 
-    @ModelAttribute("listSize")
-    public int preparePortlet(@RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange) {
-        Date date = (timeRange != null)
-                ? TimeRange.valueOf(timeRange).getFrom()
-                : DateTime.now().minusMonths(2).toDate();
-
-        return currencyService.find("CZK", date).getValues().size();
-    }
-
-    @ResourceMapping("eurPlot")
+    @ResourceMapping(PLOT_RESOURCE_VAL)
     public void renderPlot(@RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange,
                            ResourceResponse response) throws IOException {
         response.setContentType("image/png");
