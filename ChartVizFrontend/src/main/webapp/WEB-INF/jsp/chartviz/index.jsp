@@ -23,3 +23,6 @@
 </c:if>
 
 Size: ${listSize}
+
+<portlet:resourceURL var="eurPlot" escapeXml="false" id="eurPlot" />
+<img src="${eurPlot}" alt="myImage" />

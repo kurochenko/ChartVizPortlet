@@ -1,4 +1,4 @@
-package net.kurochenko.pv230.backend.parser;
+package net.kurochenko.pv230.backend.model;
 
 import java.math.BigDecimal;
 import java.util.Date;

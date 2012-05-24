@@ -1,6 +1,7 @@
 package net.kurochenko.pv230.backend.dao.jpa;
 
 import net.kurochenko.pv230.backend.dao.CurrencyValueDAO;
+import net.kurochenko.pv230.backend.model.Currency;
 import net.kurochenko.pv230.backend.model.CurrencyValue;
 import org.springframework.stereotype.Repository;
 
@@ -58,16 +59,16 @@ public class JpaCurrencyValueDAO implements CurrencyValueDAO {
     }
 
     @Override
-    public List<CurrencyValue> findRange(String currencyName, Date from) {
-        if (currencyName == null) {
+    public List<CurrencyValue> findRange(Currency currency, Date from) {
+        if (currency == null) {
             throw new IllegalArgumentException("Currency is null");
         }
         if (from == null) {
             throw new IllegalArgumentException("From is null");
         }
 
-        Query q = em.createQuery("SELECT c FROM CurrencyValue c WHERE c.currency.name = :currency AND c.time > :from ORDER BY c.time");
-        q.setParameter("currency", currencyName);
+        Query q = em.createQuery("SELECT c FROM CurrencyValue c WHERE c.currency = :currency AND c.time > :from ORDER BY c.time");
+        q.setParameter("currency", currency);
         q.setParameter("from", from);
 
         return q.getResultList();

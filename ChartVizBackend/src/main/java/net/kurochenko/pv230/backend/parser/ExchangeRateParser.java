@@ -1,5 +1,7 @@
 package net.kurochenko.pv230.backend.parser;
 
+import net.kurochenko.pv230.backend.model.ExchangeRateDTO;
+
 /**
  * @author Andrej Kuročenko <andrej@kurochenko.net>
  */

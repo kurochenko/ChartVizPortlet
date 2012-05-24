@@ -1,5 +1,6 @@
 package net.kurochenko.pv230.backend.parser;
 
+import net.kurochenko.pv230.backend.model.ExchangeRateDTO;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;

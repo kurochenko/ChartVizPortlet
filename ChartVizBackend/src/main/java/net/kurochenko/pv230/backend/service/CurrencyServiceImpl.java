@@ -2,16 +2,16 @@ package net.kurochenko.pv230.backend.service;
 
 import net.kurochenko.pv230.backend.dao.CurrencyDAO;
 import net.kurochenko.pv230.backend.dao.CurrencyValueDAO;
+import net.kurochenko.pv230.backend.model.ChartDTO;
 import net.kurochenko.pv230.backend.model.Currency;
 import net.kurochenko.pv230.backend.model.CurrencyValue;
-import net.kurochenko.pv230.backend.parser.ExchangeRateDTO;
+import net.kurochenko.pv230.backend.model.ExchangeRateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,7 +58,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CurrencyValue> find(String currencyName, Date from) {
+    public ChartDTO find(String currencyName, Date from) {
         if (currencyName == null) {
             throw new IllegalArgumentException("Currency is null");
         }
@@ -66,6 +66,14 @@ public class CurrencyServiceImpl implements CurrencyService {
             throw new IllegalArgumentException("From is null");
         }
 
-        return currencyValueDAO.findRange(currencyName, from);
+        ChartDTO result = new ChartDTO();
+        result.setCurrency(currencyDAO.findByName(currencyName));
+
+        if (result.getCurrency() == null) {
+            return null;
+        }
+
+        result.setValues(currencyValueDAO.findRange(result.getCurrency(), from));
+        return result;
     }
 }
