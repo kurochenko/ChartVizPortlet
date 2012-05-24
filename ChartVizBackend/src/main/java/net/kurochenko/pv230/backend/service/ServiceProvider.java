@@ -22,6 +22,6 @@ public class ServiceProvider {
     }
 
     public static int parse() {
-        return parser.parseAll().getRates().size();
+        return parser.parse90DaysOld().getRates().size();
     }
 }

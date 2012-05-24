@@ -44,7 +44,11 @@ public class JpaCurrencyDAO implements CurrencyDAO {
 
         Query q = em.createQuery("SELECT c FROM Currency c WHERE c.name = :name");
         q.setParameter("name", name);
-        return (Currency) q.getSingleResult();
+
+        List results = q.getResultList();
+        return (!results.isEmpty())
+                ? (Currency) results.get(0)
+                : null;
     }
 
     @Override

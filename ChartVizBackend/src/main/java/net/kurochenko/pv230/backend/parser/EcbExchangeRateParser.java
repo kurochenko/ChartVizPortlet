@@ -52,7 +52,8 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
      * URL path to XML file with currency rates
      */
     private static final String RATES_XML_DAILY = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
-    private static final String RATES_XML_ALL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
+    private static final String RATES_XML_90D = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
+    private static final String RATES_XML_ALL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml";
     public static final String DATE_XPATH = "/"+NS_GMS+":Envelope/"+NS_ECB+":Cube/"+NS_ECB+":Cube";
     public static final String CURRENCY_XPATH = "./"+NS_ECB+":Cube";
 
@@ -71,6 +72,17 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
     public ExchangeRateDTO parseAll() {
         try {
             return rawParse(RATES_XML_ALL);
+        } catch (XPathExpressionException e) {
+//            logger.error("Failed to evaluate XPath expression.", e);
+            logger.log(Level.SEVERE, "Failed to evaluate XPath expression.", e);
+        }
+        return null;
+    }
+
+    @Override
+    public ExchangeRateDTO parse90DaysOld() {
+        try {
+            return rawParse(RATES_XML_90D);
         } catch (XPathExpressionException e) {
 //            logger.error("Failed to evaluate XPath expression.", e);
             logger.log(Level.SEVERE, "Failed to evaluate XPath expression.", e);
