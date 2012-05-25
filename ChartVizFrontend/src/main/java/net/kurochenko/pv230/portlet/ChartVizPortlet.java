@@ -31,10 +31,9 @@ public class ChartVizPortlet {
     public static final int CHART_WIDTH = 800;
     public static final int CHART_HEIGHT = 500;
 
-
-
     @Autowired
     private CurrencyService currencyService;
+
 
     @RenderMapping
     public String renderDefault() {

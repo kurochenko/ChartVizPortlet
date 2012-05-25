@@ -21,6 +21,11 @@ public class ParseScheduler {
 
 
     @PostConstruct
+    public void clear() {
+        currencyService.clear();
+    }
+
+    @PostConstruct
     public void parse90DCurrencies() {
         currencyService.create(parser.parse90DaysOld());
     }

@@ -116,7 +116,6 @@ public class EcbExchangeRateParser implements ExchangeRateParser{
                         new BigDecimal(currencyNodes.item(j).getAttributes().getNamedItem(XML_RATE_ATTR_NAME).getNodeValue())
                 );
             }
-
             resultMap.put(parseValidityDate(time), rates);
         }
 

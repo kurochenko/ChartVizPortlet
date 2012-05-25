@@ -12,4 +12,5 @@ public interface CurrencyDAO {
     Currency find(Long id);
     Currency findByName(String name);
     List<Currency> findAll();
+    void clear();
 }

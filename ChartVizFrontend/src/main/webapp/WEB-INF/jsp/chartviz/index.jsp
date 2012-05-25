@@ -18,3 +18,4 @@
 <portlet:resourceURL var="plot" escapeXml="false" id="<%=PLOT_RESOURCE_VAL%>" />
 <%-- TODO change arguments --%>
 <img src="${plot}" alt="<spring:message code="img.plot.alt" arguments="XXX"/>" />
+

@@ -73,4 +73,10 @@ public class JpaCurrencyValueDAO implements CurrencyValueDAO {
 
         return q.getResultList();
     }
+
+    @Override
+    public void clear() {
+        Query q = em.createQuery("DELETE FROM CurrencyValue  c");
+        q.executeUpdate();
+    }
 }

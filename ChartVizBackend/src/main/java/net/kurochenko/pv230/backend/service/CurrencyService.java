@@ -12,5 +12,6 @@ public interface CurrencyService {
 
     void create(ExchangeRateDTO dto);
     ChartDTO find(String currencyName, Date from);
+    void clear();
 
 }

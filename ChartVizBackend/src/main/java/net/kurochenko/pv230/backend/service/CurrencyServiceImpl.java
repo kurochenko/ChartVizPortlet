@@ -76,4 +76,10 @@ public class CurrencyServiceImpl implements CurrencyService {
         result.setValues(currencyValueDAO.findRange(result.getCurrency(), from));
         return result;
     }
+
+    @Override
+    public void clear() {
+        currencyValueDAO.clear();
+        currencyDAO.clear();
+    }
 }

@@ -1,8 +1,13 @@
 package net.kurochenko.pv230.backend.model;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import static net.kurochenko.pv230.backend.util.Constants.CURRENCY_PRECISION;
+import static net.kurochenko.pv230.backend.util.Constants.CURRENCY_SCALE;
 
 /**
  * @author Andrej Kuročenko <andrej@kurochenko.net>
@@ -14,6 +19,8 @@ public class CurrencyValue {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NumberFormat
+    @Column(precision = CURRENCY_PRECISION, scale = CURRENCY_SCALE)
     private BigDecimal value;
 
     @Temporal(value = TemporalType.TIMESTAMP)

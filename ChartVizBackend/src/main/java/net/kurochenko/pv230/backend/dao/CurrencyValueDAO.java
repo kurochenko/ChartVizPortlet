@@ -14,4 +14,5 @@ public interface CurrencyValueDAO {
     CurrencyValue find(Long id);
     CurrencyValue find(String name, Date date);
     List<CurrencyValue> findRange(Currency currency, Date from);
+    void clear();
 }
