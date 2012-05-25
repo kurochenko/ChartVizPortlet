@@ -1,4 +1,4 @@
-package net.kurochenko.pv230.portlet;
+package net.kurochenko.pv230.backend.util;
 
 import org.joda.time.DateTime;
 

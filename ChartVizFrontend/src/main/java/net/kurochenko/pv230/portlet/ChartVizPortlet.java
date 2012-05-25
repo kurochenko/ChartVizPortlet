@@ -1,25 +1,31 @@
 package net.kurochenko.pv230.portlet;
 
 import net.kurochenko.pv230.backend.model.ChartDTO;
+import net.kurochenko.pv230.backend.model.Config;
+import net.kurochenko.pv230.backend.model.Currency;
+import net.kurochenko.pv230.backend.service.ConfigService;
 import net.kurochenko.pv230.backend.service.CurrencyService;
+import net.kurochenko.pv230.backend.util.TimeRange;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.entity.StandardEntityCollection;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import javax.portlet.ResourceResponse;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.List;
 
-import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.PLOT_RESOURCE_VAL;
-import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.TIME_RANGE_PARAM;
+import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.*;
 
 /**
  * @author Andrej Kuročenko <andrej@kurochenko.net>
@@ -30,31 +36,74 @@ public class ChartVizPortlet {
 
     public static final int CHART_WIDTH = 800;
     public static final int CHART_HEIGHT = 500;
+    public static final String DEFAULT_CURRENCY = "CZK";
 
     @Autowired
     private CurrencyService currencyService;
 
+    @Autowired
+    private ConfigService configService;
+
+
+    @ModelAttribute("currencies")
+    public List<Currency> getCurrencyList() {
+        return currencyService.findVisible();
+    }
+
+    @ModelAttribute("actualCurrency")
+    public Currency getActualCurrency() {
+        return getConfig().getLastCurrency();
+    }
+
+    @ModelAttribute("config")
+    public Config getConfig() {
+        return configService.load();
+    }
 
     @RenderMapping
-    public String renderDefault() {
+    public String renderTimeRange(Model model,
+                                  @RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange,
+                                  @RequestParam(value = CURRENCY_VAL_PARAM, required = false, defaultValue = DEFAULT_CURRENCY) String currencyName)
+            throws IOException {
+
+        model.addAttribute(IMAGEMAP_ATTR, extractImageMapToModel(timeRange, currencyName));
         return "chartviz/index";
     }
 
-    @RenderMapping(params = TIME_RANGE_PARAM)
-    public String renderTimeRange() {
-        return "chartviz/index";
+    private String extractImageMapToModel(String timeRange, String currencyName) {
+        FileOutputStream os = null;
+        ChartRenderingInfo info = null;
+        try {
+            os = new FileOutputStream("smt.png");
+            info = writeChart(currencyService.find(currencyName, convertTimeRange(timeRange)), os);
+        } catch (IOException e) {
+            // TODO log
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    // TODO log
+                }
+            }
+        }
+
+        return ChartUtilities.getImageMap(IMAGEMAP_NAME, info);
     }
 
     @ResourceMapping(PLOT_RESOURCE_VAL)
     public void renderPlot(@RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange,
+                           @RequestParam(value = CURRENCY_VAL_PARAM, required = false, defaultValue = DEFAULT_CURRENCY) String currencyName,
                            ResourceResponse response) throws IOException {
         response.setContentType("image/png");
+        writeChart(currencyService.find(currencyName, convertTimeRange(timeRange)), response.getPortletOutputStream());
 
-        Date date = (timeRange != null)
-                ? TimeRange.valueOf(timeRange).getFrom()
-                : DateTime.now().minusMonths(2).toDate();
-        writeChart(currencyService.find("CZK", date), response.getPortletOutputStream());
+    }
 
+    private Date convertTimeRange(String timeRange) {
+        return (timeRange != null)
+                    ? TimeRange.valueOf(timeRange).getFrom()
+                    : TimeRange.valueOf(getConfig().getLastTimeRange()).getFrom(); // default
     }
 
     private ChartRenderingInfo writeChart(ChartDTO chartDTO, OutputStream os) {
@@ -64,8 +113,8 @@ public class ChartVizPortlet {
             ChartUtilities.writeChartAsPNG(
                     os,
                     new ChartCreator().create(chartDTO),
-                    CHART_WIDTH,
-                    CHART_HEIGHT,
+                    getConfig().getImgWidth(),
+                    getConfig().getImgHeight(),
                     info
             );
         } catch (IOException e) {

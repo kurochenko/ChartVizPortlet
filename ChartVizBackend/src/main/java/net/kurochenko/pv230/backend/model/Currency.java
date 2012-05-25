@@ -17,6 +17,8 @@ public class Currency {
 
     private String name;
 
+    private boolean visible;
+
 
     public Long getId() {
         return id;
@@ -34,6 +36,14 @@ public class Currency {
         this.name = name;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,6 +51,7 @@ public class Currency {
 
         Currency currency = (Currency) o;
 
+        if (visible != currency.visible) return false;
         if (id != null ? !id.equals(currency.id) : currency.id != null) return false;
         if (name != null ? !name.equals(currency.name) : currency.name != null) return false;
 
@@ -51,6 +62,7 @@ public class Currency {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (visible ? 1 : 0);
         return result;
     }
 }

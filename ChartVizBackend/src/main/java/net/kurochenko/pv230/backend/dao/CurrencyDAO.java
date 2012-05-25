@@ -9,8 +9,10 @@ import java.util.List;
  */
 public interface CurrencyDAO {
     void create(Currency currency);
+    void update(Currency currency);
     Currency find(Long id);
     Currency findByName(String name);
     List<Currency> findAll();
+    List<Currency> findVisible();
     void clear();
 }

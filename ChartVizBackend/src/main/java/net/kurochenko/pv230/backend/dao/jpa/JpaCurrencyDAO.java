@@ -28,6 +28,15 @@ public class JpaCurrencyDAO implements CurrencyDAO {
     }
 
     @Override
+    public void update(Currency currency) {
+        if (currency == null) {
+            throw new IllegalArgumentException("Currency is null");
+        }
+
+        em.merge(currency);
+    }
+
+    @Override
     public Currency find(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("ID is null");
@@ -53,7 +62,13 @@ public class JpaCurrencyDAO implements CurrencyDAO {
 
     @Override
     public List<Currency> findAll() {
-        Query q = em.createQuery("SELECT c FROM Currency c");
+        Query q = em.createQuery("SELECT c FROM Currency c ORDER BY c.name");
+        return  q.getResultList();
+    }
+
+    @Override
+    public List<Currency> findVisible() {
+        Query q = em.createQuery("SELECT c FROM Currency c WHERE c.visible = true ORDER BY c.name");
         return  q.getResultList();
     }
 

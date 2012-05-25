@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,6 +58,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
+    public void update(Currency currency) {
+        if (currency == null) {
+            throw new IllegalArgumentException("Currency is null");
+        }
+
+        currencyDAO.update(currency);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public ChartDTO find(String currencyName, Date from) {
         if (currencyName == null) {
@@ -75,6 +85,25 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         result.setValues(currencyValueDAO.findRange(result.getCurrency(), from));
         return result;
+    }
+
+    @Override
+    public List<Currency> findAll() {
+        return currencyDAO.findAll();
+    }
+
+    @Override
+    public List<Currency> findVisible() {
+        return currencyDAO.findVisible();
+    }
+
+    @Override
+    public Currency findByName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name is null");
+        }
+
+        return currencyDAO.findByName(name);
     }
 
     @Override
