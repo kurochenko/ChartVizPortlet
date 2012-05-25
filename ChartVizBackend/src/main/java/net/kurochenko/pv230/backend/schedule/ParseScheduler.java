@@ -29,10 +29,10 @@ public class ParseScheduler {
     private ConfigService configService;
 
 
-    @PostConstruct
-    public void clear() {
-        currencyService.clear();
-    }
+//    @PostConstruct
+//    public void clear() {
+//        currencyService.clear();
+//    }
 
     @PostConstruct
     public void parse90DCurrencies() {
@@ -56,10 +56,16 @@ public class ParseScheduler {
     @PostConstruct
     public void setConfig() {
         if (configService.load() == null) {
+
+            Currency currency = currencyService.findByName("CZK");
+            if (currency == null) {
+                throw new IllegalArgumentException("Currency CZK does not exist");
+            }
+
             Config c = new Config();
-            c.setImgHeight(600);
+            c.setImgHeight(500);
             c.setImgWidth(800);
-            c.setLastCurrency(currencyService.findByName("CZK"));
+            c.setLastCurrency(currency);
             c.setLastTimeRange(TimeRange.WEEK.getName());
             configService.save(c);
         }

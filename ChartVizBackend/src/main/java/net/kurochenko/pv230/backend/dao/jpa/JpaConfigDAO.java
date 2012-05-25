@@ -25,7 +25,7 @@ public class JpaConfigDAO implements ConfigDAO {
             throw new IllegalArgumentException("Config is null");
         }
 
-        em.persist(config);
+        em.merge(config);
     }
 
     @Override

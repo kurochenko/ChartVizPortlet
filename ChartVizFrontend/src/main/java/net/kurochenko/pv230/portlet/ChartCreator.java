@@ -35,6 +35,12 @@ public class ChartCreator {
 
 
     public JFreeChart create(ChartDTO chartDTO) {
+        if (chartDTO == null) {
+            throw new IllegalArgumentException("ChartDTO is null");
+        }
+        if (chartDTO.getCurrency() == null) {
+            throw new IllegalArgumentException("ChartDTO currency is null");
+        }
 
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "EUR/" + chartDTO.getCurrency().getName(),

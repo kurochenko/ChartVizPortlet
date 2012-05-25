@@ -34,10 +34,6 @@ import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.*;
 @RequestMapping("VIEW")
 public class ChartVizPortlet {
 
-    public static final int CHART_WIDTH = 800;
-    public static final int CHART_HEIGHT = 500;
-    public static final String DEFAULT_CURRENCY = "CZK";
-
     @Autowired
     private CurrencyService currencyService;
 
@@ -50,11 +46,6 @@ public class ChartVizPortlet {
         return currencyService.findVisible();
     }
 
-    @ModelAttribute("actualCurrency")
-    public Currency getActualCurrency() {
-        return getConfig().getLastCurrency();
-    }
-
     @ModelAttribute("config")
     public Config getConfig() {
         return configService.load();
@@ -63,11 +54,26 @@ public class ChartVizPortlet {
     @RenderMapping
     public String renderTimeRange(Model model,
                                   @RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange,
-                                  @RequestParam(value = CURRENCY_VAL_PARAM, required = false, defaultValue = DEFAULT_CURRENCY) String currencyName)
+                                  @RequestParam(value = CURRENCY_VAL_PARAM, required = false) String currencyName)
             throws IOException {
 
+        processParameters(currencyName, timeRange);
+        currencyName = getConfig().getLastCurrency().getName();
+        timeRange = getConfig().getLastTimeRange();
         model.addAttribute(IMAGEMAP_ATTR, extractImageMapToModel(timeRange, currencyName));
+
         return "chartviz/index";
+    }
+
+    private void processParameters(String currencyName, String timeRange) {
+        Config config = configService.load();
+        if (currencyName != null) {
+            config.setLastCurrency(currencyService.findByName(currencyName));
+        }
+        if (timeRange != null) {
+            config.setLastTimeRange(timeRange);
+        }
+        configService.save(config);
     }
 
     private String extractImageMapToModel(String timeRange, String currencyName) {
@@ -93,9 +99,12 @@ public class ChartVizPortlet {
 
     @ResourceMapping(PLOT_RESOURCE_VAL)
     public void renderPlot(@RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange,
-                           @RequestParam(value = CURRENCY_VAL_PARAM, required = false, defaultValue = DEFAULT_CURRENCY) String currencyName,
+                           @RequestParam(value = CURRENCY_VAL_PARAM, required = false) String currencyName,
                            ResourceResponse response) throws IOException {
         response.setContentType("image/png");
+        processParameters(currencyName, timeRange);
+        currencyName = getConfig().getLastCurrency().getName();
+        timeRange = getConfig().getLastTimeRange();
         writeChart(currencyService.find(currencyName, convertTimeRange(timeRange)), response.getPortletOutputStream());
 
     }
@@ -107,6 +116,13 @@ public class ChartVizPortlet {
     }
 
     private ChartRenderingInfo writeChart(ChartDTO chartDTO, OutputStream os) {
+        if (chartDTO == null) {
+            throw new IllegalArgumentException("ChartDTO is null");
+        }
+        if (os == null) {
+            throw new IllegalArgumentException("OutputStream is null");
+        }
+
         ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 
         try {
