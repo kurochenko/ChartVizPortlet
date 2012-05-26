@@ -4,5 +4,10 @@
     <portlet>
         <portlet-name>ChartViz</portlet-name>
         <instanceable>true</instanceable>
+        <header-portlet-css>/css/jquery.tooltip.css</header-portlet-css>
+        <header-portlet-javascript>https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js</header-portlet-javascript>
+        <header-portlet-javascript>/js/jquery.bigframe.js</header-portlet-javascript>
+        <header-portlet-javascript>/js/jquery.dimensions.js</header-portlet-javascript>
+        <header-portlet-javascript>/js/jquery.tooltip.js</header-portlet-javascript>
     </portlet>
 </liferay-portlet-app>

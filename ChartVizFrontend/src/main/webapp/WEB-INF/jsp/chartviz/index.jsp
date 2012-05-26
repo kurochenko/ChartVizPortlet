@@ -30,7 +30,17 @@
 
 <portlet:resourceURL var="plot" escapeXml="false" id="<%=PLOT_RESOURCE_VAL%>" />
 <%--TODO change arguments --%>
-<img src="${plot}" alt="<spring:message code="img.plot.alt" arguments="XXX"/>" usemap="#chMap" />
+<img src="${plot}" alt="<spring:message code="img.plot.alt" arguments="XXX"/>" usemap="#<%=IMAGEMAP_NAME%>" />
 
 ${imagemap}
+
+<script type="text/javascript">
+    $("#<%=IMAGEMAP_NAME%> *").tooltip({
+        track: true,
+        delay: 0,
+        showURL: false,
+        showBody: " - ",
+        fade: 250
+    });
+</script>
 
