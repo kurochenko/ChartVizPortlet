@@ -29,18 +29,15 @@ public class ParseScheduler {
     private ConfigService configService;
 
 
-//    @PostConstruct
-//    public void clear() {
-//        currencyService.clear();
-//    }
-
     @PostConstruct
     public void parse90DCurrencies() {
         currencyService.create(parser.parse90DaysOld());
+
+        setVisibleCurrencies();
+        setConfig();
     }
 
-    @PostConstruct
-    public void setVisibleCurrencies() {
+    private void setVisibleCurrencies() {
         List<String> visible = new ArrayList<String>(){{
             add("CZK");
             add("USD");
@@ -53,8 +50,7 @@ public class ParseScheduler {
         }
     }
 
-    @PostConstruct
-    public void setConfig() {
+    private void setConfig() {
         if (configService.load() == null) {
 
             Currency currency = currencyService.findByName("CZK");
