@@ -25,14 +25,14 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
-import static net.kurochenko.pv230.portlet.ChartVizPortletConstants.*;
+import static net.kurochenko.pv230.portlet.Constants.*;
 
 /**
  * @author Andrej Kuročenko <andrej@kurochenko.net>
  */
 @Controller
 @RequestMapping("VIEW")
-public class ChartVizPortlet {
+public class ViewController {
 
     @Autowired
     private CurrencyService currencyService;
@@ -135,16 +135,8 @@ public class ChartVizPortlet {
             );
         } catch (IOException e) {
             e.printStackTrace(); // TODO log
-
-        } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace(); // TODO log
-                }
-            }
         }
+
         return info;
     }
 }

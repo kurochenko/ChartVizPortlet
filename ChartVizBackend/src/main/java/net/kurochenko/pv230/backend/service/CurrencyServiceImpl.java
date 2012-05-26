@@ -67,6 +67,17 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
+    public void updateAll(List<Currency> currencies) {
+        if (currencies == null) {
+            throw new IllegalArgumentException("Currency list is null");
+        }
+
+        for (Currency c : currencies) {
+            currencyDAO.update(c);
+        }
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public ChartDTO find(String currencyName, Date from) {
         if (currencyName == null) {

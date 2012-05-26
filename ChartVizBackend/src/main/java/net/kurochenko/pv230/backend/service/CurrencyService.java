@@ -14,6 +14,7 @@ public interface CurrencyService {
 
     void create(ExchangeRateDTO dto);
     void update(Currency currency);
+    void updateAll(List<Currency> currencies);
     ChartDTO find(String currencyName, Date from);
     List<Currency> findAll();
     List<Currency> findVisible();

@@ -2,7 +2,7 @@
 <%@include file="../init.jspf" %>
 <f:setBundle basename="content.chartviz"/>
 
-<%@page import="static net.kurochenko.pv230.portlet.ChartVizPortletConstants.*" %>
+<%@page import="static net.kurochenko.pv230.portlet.Constants.*" %>
 <%@ page import="net.kurochenko.pv230.backend.util.TimeRange" %>
 
 <c:set var="timeRanges" value="<%=TimeRange.values()%>" />
