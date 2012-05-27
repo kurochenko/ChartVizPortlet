@@ -18,6 +18,7 @@ public class Constants {
 
     public static final String CURRENCY_FORM_NAME = "currencyForm";
     public static final String CURRENCY_FORM_MODEL = "currencyWrapper";
+    public static final String VISIBLE_CURRENCY_FORM_MODEL = "visibleCurrencyWrapper";
 
 
 }

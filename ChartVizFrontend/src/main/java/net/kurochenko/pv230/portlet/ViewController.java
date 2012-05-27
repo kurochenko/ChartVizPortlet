@@ -51,6 +51,11 @@ public class ViewController {
         return configService.load();
     }
 
+    @ModelAttribute("actualCurrency")
+    public Currency getActualCurrency() {
+        return getConfig().getLastCurrency();
+    }
+
     @RenderMapping
     public String renderTimeRange(Model model,
                                   @RequestParam(value = TIME_RANGE_PARAM, required = false) String timeRange,

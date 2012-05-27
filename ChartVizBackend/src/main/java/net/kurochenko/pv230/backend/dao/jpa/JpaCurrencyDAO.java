@@ -77,4 +77,23 @@ public class JpaCurrencyDAO implements CurrencyDAO {
         Query q = em.createQuery("DELETE FROM Currency  c");
         q.executeUpdate();
     }
+
+    @Override
+    public void setVisible(List<Currency> currencies) {
+        if (currencies == null) {
+            throw new IllegalArgumentException("Currency list is null");
+        }
+
+        for (Currency currency : currencies) {
+            Query q = em.createQuery("UPDATE Currency c SET c.visible = true WHERE c.id = :id");
+            q.setParameter("id", currency.getId());
+            q.executeUpdate();
+        }
+
+    }
+
+    @Override
+    public void unsetVisible() {
+        em.createQuery("UPDATE Currency c SET c.visible = false WHERE visible = true").executeUpdate();
+    }
 }

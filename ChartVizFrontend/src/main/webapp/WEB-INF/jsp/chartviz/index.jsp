@@ -6,7 +6,7 @@
 <%@ page import="net.kurochenko.pv230.backend.util.TimeRange" %>
 
 <c:set var="timeRanges" value="<%=TimeRange.values()%>" />
-<ul>
+<p class="chartVizP"><spring:message code="time.range" />:</p><ul class="chartVizUl">
     <c:forEach items="${timeRanges}" var="timeRange">
         <li>
             <portlet:renderURL var="graphRangeURL">
@@ -16,8 +16,9 @@
         </li>
     </c:forEach>
 </ul>
+<br />
 
-<ul>
+<p class="chartVizP"><spring:message code="currency" />:</p><ul class="chartVizUl">
     <c:forEach items="${currencies}" var="currency">
         <li>
             <portlet:renderURL var="currencyURL">
@@ -27,10 +28,11 @@
         </li>
     </c:forEach>
 </ul>
+<br />
 
+<div class="chartVizClear">&nbsp;</div>
 <portlet:resourceURL var="plot" escapeXml="false" id="<%=PLOT_RESOURCE_VAL%>" />
-<%--TODO change arguments --%>
-<img src="${plot}" alt="<spring:message code="img.plot.alt" arguments="XXX"/>" usemap="#<%=IMAGEMAP_NAME%>" />
+<img src="${plot}" alt="<spring:message code="img.plot.alt" arguments="${actualCurrency.name}"/>" usemap="#<%=IMAGEMAP_NAME%>" class="plotImage" />
 
 ${imagemap}
 

@@ -15,4 +15,6 @@ public interface CurrencyDAO {
     List<Currency> findAll();
     List<Currency> findVisible();
     void clear();
+    void setVisible(List<Currency> currencies);
+    void unsetVisible();
 }

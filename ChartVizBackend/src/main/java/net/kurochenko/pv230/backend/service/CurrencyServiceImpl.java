@@ -67,13 +67,10 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void updateAll(List<Currency> currencies) {
-        if (currencies == null) {
-            throw new IllegalArgumentException("Currency list is null");
-        }
-
-        for (Currency c : currencies) {
-            currencyDAO.update(c);
+    public void setVisible(List<Currency> currencies) {
+        currencyDAO.unsetVisible();
+        if (currencies != null) {
+            currencyDAO.setVisible(currencies);
         }
     }
 
@@ -96,6 +93,16 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         result.setValues(currencyValueDAO.findRange(result.getCurrency(), from));
         return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Currency find(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID is null");
+        }
+
+        return currencyDAO.find(id);
     }
 
     @Override
